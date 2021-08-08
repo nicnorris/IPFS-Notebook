@@ -1,8 +1,11 @@
 /*import ReactMarkdown from "react-markdown";*/
 
+import { useState } from 'react';
 const cryptojs = require('crypto-js');
 
 function Main({ activeNote, onUpdateNote }){
+
+    const [key, setKey] = useState('');
 
     const onEditField= (key, value) => {
         onUpdateNote({
@@ -13,7 +16,7 @@ function Main({ activeNote, onUpdateNote }){
     };
 
     const encrypt = () => {
-        const ciphertext = cryptojs.AES.encrypt(activeNote.body, 'secret key 123').toString();
+        const ciphertext = cryptojs.AES.encrypt(activeNote.body, key).toString();
         onUpdateNote({
             ...activeNote,
             body: ciphertext,
@@ -21,7 +24,7 @@ function Main({ activeNote, onUpdateNote }){
     };
 
     const decrypt = () => {
-        const bytes  = cryptojs.AES.decrypt(activeNote.body, 'secret key 123');
+        const bytes  = cryptojs.AES.decrypt(activeNote.body, key);
         const originalText = bytes.toString(cryptojs.enc.Utf8);
         onUpdateNote({
             ...activeNote,
@@ -54,6 +57,7 @@ function Main({ activeNote, onUpdateNote }){
             <button onClick={decrypt}>
                 Decrypt
             </button>
+            <input type='text' id='key' placeholder="Enter encryption key here" onChange={(e) => setKey(e.target.value)}/>
         </div>
         {/*<div className="app-main-note-preview">
             <h1 className="preview-title">{activeNote.title}</h1>
