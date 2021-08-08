@@ -23,8 +23,8 @@ button {
   background: none;
   border: 0;
   margin: 0;
-  padding: 0;
-  font-size: inherit;
+  padding: 0px, 5px, 0px, 0px;
+  font-size: 20px;
   font-family: inherit;
   cursor: pointer;
   color: rgb(167, 210, 172);
@@ -49,6 +49,9 @@ button:hover {
   display: flex;
   justify-content: space-between;
   padding: 25px;
+}
+.app-sidebar-header h1 {
+  margin: 0;
   background: -webkit-linear-gradient(
     60deg,
     rgb(220, 96, 96),
@@ -56,9 +59,6 @@ button:hover {
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-}
-.app-sidebar-header h1 {
-  margin: 0;
 }
 
 .app-sidebar-notes {
@@ -75,8 +75,14 @@ button:hover {
   justify-content: space-between;
 }
 .app-sidebar-note button {
-  color: rgb(222, 93, 118);
+  color: rgb(211, 127, 144);
+  font-size: 16px;
 }
+.app-sidebar-note button:hover {
+  color: rgb(225, 41, 78);
+  font-size: 16px;
+}
+
 .app-sidebar-note p {
   margin: 10px 0;
 }
@@ -126,7 +132,7 @@ textarea {
   margin-bottom: 20px;
   width: 100%;
   /*height: calc(50vh - 130px);*/
-  height: calc(100vh - 130px);
+  height: calc(95vh - 130px);
   padding: 10px;
   resize: none;
   font-size: inherit;

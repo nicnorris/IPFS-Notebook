@@ -53,7 +53,7 @@ function Main({ activeNote, onUpdateNote }){
             </button>
             <button onClick={decrypt}>
                 Decrypt
-            </button>
+            </button> 
         </div>
         {/*<div className="app-main-note-preview">
             <h1 className="preview-title">{activeNote.title}</h1>
