@@ -24,12 +24,21 @@ function Main({ activeNote, onUpdateNote }){
     };
 
     const decrypt = () => {
-        const bytes  = cryptojs.AES.decrypt(activeNote.body, key);
-        const originalText = bytes.toString(cryptojs.enc.Utf8);
-        onUpdateNote({
-            ...activeNote,
-            body: originalText,
-        });
+        try{ 
+
+            const bytes  = cryptojs.AES.decrypt(activeNote.body, key);
+            const originalText = bytes.toString(cryptojs.enc.Utf8);
+            onUpdateNote({
+                ...activeNote,
+                body: originalText,
+            });
+        }
+        catch(e){
+            onUpdateNote({
+                ...activeNote,
+                body: 'bad decryption'
+            });
+        }
     }
 
     if(!activeNote) 
@@ -52,10 +61,10 @@ function Main({ activeNote, onUpdateNote }){
             onChange= {(e) => onEditField("body", e.target.value)} 
             />
             <button onClick={encrypt}>
-                Encrypt
+                ENCRYPT
             </button>
             <button onClick={decrypt}>
-                Decrypt
+                DECRYPT
             </button>
             <input type='text' id='key' placeholder="Enter encryption key here" onChange={(e) => setKey(e.target.value)}/>
         </div>
