@@ -19,25 +19,25 @@ function App() {
     setNotes([newNote, ...notes]);
   };
 
-const onUpdateNote = (updatedNote) => {
-  const updatedNotesArray = notes.map((note) => {
-    if(note.id === activeNote){
-      return updatedNote;
-    }
-    return note;
-  });
+  const onUpdateNote = (updatedNote) => {
+    const updatedNotesArray = notes.map((note) => {
+      if(note.id === activeNote){
+        return updatedNote;
+      }
+      return note;
+    });
 
-  setNotes(updatedNotesArray);
-}
+    setNotes(updatedNotesArray);
+  }
 
 
-const onDeleteNote = (idToDelete) => {
-  setNotes(notes.filter((note) => note.id !== idToDelete));
-}
+  const onDeleteNote = (idToDelete) => {
+    setNotes(notes.filter((note) => note.id !== idToDelete));
+  }
 
-const getActiveNote = () => {
-  return notes.find((note) => note.id === activeNote);
-}
+  const getActiveNote = () => {
+    return notes.find((note) => note.id === activeNote);
+  }
 
   return (
     <div className="App" >
