@@ -39,17 +39,17 @@ body,
   background: black;
 }
 
-button {
+.sidebar-buttons button {
   background: none;
   border: 0;
   margin: 0;
-  padding: 0px 10px 0px 0px;
-  font-size: 20px;
+  padding: 10px 0px 0px 20px;
+  font-size: 19px;
   font-family: inherit;
   cursor: pointer;
-  color: rgb(147, 179, 151);
+  color: rgb(133, 186, 118);
 }
-button:hover {
+.sidebar-buttons button:hover {
   color: rgb(91, 232, 91);
 }
 
@@ -62,7 +62,7 @@ button:hover {
 .cid {
   display: flex;
   justify-content: flex-end;
-  padding: 0px 13px 5px 0px;
+  padding: 0px 13px 10px 0px;
 }
 
 .cid input {
@@ -81,7 +81,7 @@ button:hover {
 .app-sidebar-header {
   display: flex;
   justify-content: space-between;
-  padding: 25px;
+  padding: 25px 25px 20px 25px;
 }
 .app-sidebar-header h1 {
   margin: 0;
@@ -110,10 +110,14 @@ button:hover {
 .app-sidebar-note button {
   color: rgb(211, 127, 144);
   font-size: 16px;
+  background: none;
+  border: 0px;
 }
 .app-sidebar-note button:hover {
   color: rgb(225, 41, 78);
   font-size: 16px;
+  background: none;
+  border: 0px;
 }
 
 .app-sidebar-note p {
@@ -180,6 +184,21 @@ textarea {
 
 .action-buttons {
   padding: 0px 0px 10px 0px;
+}
+
+.action-buttons button {
+  background: none;
+  border: 0;
+  margin: 0;
+  padding: 0px 10px 0px 0px;
+  font-size: 20px;
+  font-family: inherit;
+  cursor: pointer;
+  color: rgb(179, 167, 147);
+}
+
+.action-buttons button:hover {
+  color: rgb(91, 232, 91);
 }
 
 /* Preview */

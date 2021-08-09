@@ -75,15 +75,15 @@ function Main({ activeNote, onUpdateNote }){
             onChange= {(e) => onEditField("body", e.target.value)} 
             />
             <div class="action-buttons">
-            <button onClick={encrypt}>
-                ENCRYPT
-            </button>
-            <button onClick={decrypt}>
-                DECRYPT
-            </button>
-            <button onClick={saveNote}>
-                SAVE
-            </button>
+                <button onClick={encrypt}>
+                    ENCRYPT
+                </button>
+                <button onClick={decrypt}>
+                    DECRYPT
+                </button>
+                <button onClick={saveNote}>
+                    SAVE
+                </button>
             </div>
             <input class="encryption-box" type='text' id='key' placeholder="Enter encryption key here..." onChange={(e) => setKey(e.target.value)}/>
             <h3 id='cid'>Save this CID: {cid}</h3>
