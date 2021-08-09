@@ -152,7 +152,7 @@ textarea {
   margin-bottom: 20px;
   width: 100%;
   /*height: calc(50vh - 130px);*/
-  height: calc(90vh - 130px);
+  height: calc(80vh - 130px);
   padding: 10px;
   resize: none;
   font-size: inherit;

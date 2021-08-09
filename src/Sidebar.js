@@ -1,11 +1,14 @@
-function Sidebar({ notes, onAddNote, onDeleteNote, activeNote, setActiveNote }) {
-    const sortedNotes = notes.sort((a, b) => b.lastModified - a.lastModified)
+import { useState } from 'react';
 
+function Sidebar({ notes, onAddNote, onDeleteNote, activeNote, setActiveNote, retrieveNote }) {
+    const sortedNotes = notes.sort((a, b) => b.lastModified - a.lastModified);
+    const [cid, setCid] = useState('');
 
     return <div className="app-sidebar">
         <div className="app-sidebar-header">
             <h1>IPFS-NoteBook</h1>
             <button onClick={onAddNote}>Add</button>
+            <button onClick={() => retrieveNote(cid)}>Retrieve</button>
         </div>
         <div className="app-sidebar-notes">
         {sortedNotes.map((note) => (
@@ -25,7 +28,9 @@ function Sidebar({ notes, onAddNote, onDeleteNote, activeNote, setActiveNote }) 
                 </small>
             </div>
             ))}
-            
+            <div className='cid'>
+                <input type='text' placeholder='Enter CID to Retrieve' onChange={ (e) => setCid(e.target.value)}/>
+            </div>
         </div>
     </div>
 };

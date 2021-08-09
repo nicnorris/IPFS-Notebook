@@ -1,11 +1,14 @@
 /*import ReactMarkdown from "react-markdown";*/
 
 import { useState } from 'react';
+import { Web3Storage } from 'web3.storage/dist/bundle.esm.min.js';
 const cryptojs = require('crypto-js');
+const API_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDRlZjc1NTlEOUE1NjcxOUVEMjQ2OEMxODJhMTViNTA0QTkxMkJCNjYiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2Mjg0MzEzNTU3NDgsIm5hbWUiOiJIYWNrZnMifQ.E4TMeK7nY7gxk4lfYQdIdxDsge6c-SFR5adMjWaAtdo';
 
 function Main({ activeNote, onUpdateNote }){
 
     const [key, setKey] = useState('');
+    const [cid, setCid] = useState('');
 
     const onEditField= (key, value) => {
         onUpdateNote({
@@ -25,7 +28,6 @@ function Main({ activeNote, onUpdateNote }){
 
     const decrypt = () => {
         try{ 
-
             const bytes  = cryptojs.AES.decrypt(activeNote.body, key);
             const originalText = bytes.toString(cryptojs.enc.Utf8);
             onUpdateNote({
@@ -39,6 +41,18 @@ function Main({ activeNote, onUpdateNote }){
                 body: 'bad decryption'
             });
         }
+    }
+
+    const saveNote = async () => {
+        const storageClient = new Web3Storage({token: API_TOKEN});
+        let blob = new Blob([JSON.stringify(activeNote)], { type: 'application/json' });
+        let file = new File([blob], `${activeNote.title}.json`);
+        const cid = await storageClient.put([file]);
+        // onUpdateNote({
+        //     ...activeNote,
+        //     body: activeNote.body + cid,
+        // });
+        setCid(cid);
     }
 
     if(!activeNote) 
@@ -66,7 +80,11 @@ function Main({ activeNote, onUpdateNote }){
             <button onClick={decrypt}>
                 DECRYPT
             </button>
+            <button onClick={saveNote}>
+                SAVE
+            </button>
             <input type='text' id='key' placeholder="Enter encryption key here" onChange={(e) => setKey(e.target.value)}/>
+            <h3 id='cid'>Save this CID: {cid}</h3>
         </div>
         {/*<div className="app-main-note-preview">
             <h1 className="preview-title">{activeNote.title}</h1>
