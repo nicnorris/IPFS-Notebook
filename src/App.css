@@ -43,7 +43,7 @@ button {
   background: none;
   border: 0;
   margin: 0;
-  padding: 0px, 5px, 0px, 0px;
+  padding: 0px 10px 0px 0px;
   font-size: 20px;
   font-family: inherit;
   cursor: pointer;
@@ -58,6 +58,19 @@ button:hover {
 }
 
 /* SIDEBAR STYLES */
+
+.cid {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0px 13px 5px 0px;
+}
+
+.cid input {
+  background-color: black;
+  border: 1px solid #966767;
+  color: rgb(134, 167, 166);
+  width: 50%;
+}
 
 .app-sidebar {
   width: 30%;
@@ -152,7 +165,7 @@ textarea {
   margin-bottom: 20px;
   width: 100%;
   /*height: calc(50vh - 130px);*/
-  height: calc(80vh - 130px);
+  height: calc(84vh - 130px);
   padding: 10px;
   resize: none;
   font-size: inherit;
@@ -163,6 +176,10 @@ textarea {
 .app-main-note-edit input {
   height: 50px;
   font-size: 2rem;
+}
+
+.action-buttons {
+  padding: 0px 0px 10px 0px;
 }
 
 /* Preview */

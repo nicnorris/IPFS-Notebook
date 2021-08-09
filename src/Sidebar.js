@@ -10,6 +10,9 @@ function Sidebar({ notes, onAddNote, onDeleteNote, activeNote, setActiveNote, re
             <button onClick={onAddNote}>Add</button>
             <button onClick={() => retrieveNote(cid)}>Retrieve</button>
         </div>
+        <div className='cid'>
+                <input type='text' placeholder='Enter CID to Retrieve' onChange={ (e) => setCid(e.target.value)}/>
+        </div>
         <div className="app-sidebar-notes">
         {sortedNotes.map((note) => (
             <div className={`app-sidebar-note ${note.id === activeNote && "active"}`}
@@ -28,9 +31,6 @@ function Sidebar({ notes, onAddNote, onDeleteNote, activeNote, setActiveNote, re
                 </small>
             </div>
             ))}
-            <div className='cid'>
-                <input type='text' placeholder='Enter CID to Retrieve' onChange={ (e) => setCid(e.target.value)}/>
-            </div>
         </div>
     </div>
 };
