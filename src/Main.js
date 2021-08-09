@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Web3Storage } from 'web3.storage/dist/bundle.esm.min.js';
 const cryptojs = require('crypto-js');
+const ethers = require('ethers');
 const API_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDRlZjc1NTlEOUE1NjcxOUVEMjQ2OEMxODJhMTViNTA0QTkxMkJCNjYiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2Mjg0MzEzNTU3NDgsIm5hbWUiOiJIYWNrZnMifQ.E4TMeK7nY7gxk4lfYQdIdxDsge6c-SFR5adMjWaAtdo';
 
 function Main({ activeNote, onUpdateNote }){
@@ -20,8 +21,10 @@ function Main({ activeNote, onUpdateNote }){
 
     const encrypt = () => {
         const ciphertext = cryptojs.AES.encrypt(activeNote.body, key).toString();
+        //const ciphertextTitle = cryptojs.AES.encrypt(activeNote.title, key).toString();
         onUpdateNote({
             ...activeNote,
+            //title: ciphertextTitle,
             body: ciphertext,
         });
     };
@@ -30,8 +33,13 @@ function Main({ activeNote, onUpdateNote }){
         try{ 
             const bytes  = cryptojs.AES.decrypt(activeNote.body, key);
             const originalText = bytes.toString(cryptojs.enc.Utf8);
+
+            //const bytesTitle = cryptojs.AES.decrypt(activeNote.title, key);
+            //const originalTitle = bytesTitle.toString(cryptojs.enc.Utf8);
+
             onUpdateNote({
                 ...activeNote,
+                //title: originalTitle,
                 body: originalText,
             });
         }
@@ -48,10 +56,6 @@ function Main({ activeNote, onUpdateNote }){
         let blob = new Blob([JSON.stringify(activeNote)], { type: 'application/json' });
         let file = new File([blob], `${activeNote.title}.json`);
         const cid = await storageClient.put([file]);
-        // onUpdateNote({
-        //     ...activeNote,
-        //     body: activeNote.body + cid,
-        // });
         setCid(cid);
     }
 

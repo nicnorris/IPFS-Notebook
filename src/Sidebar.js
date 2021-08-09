@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-function Sidebar({ notes, onAddNote, onDeleteNote, activeNote, setActiveNote, retrieveNote }) {
+function Sidebar({ notes, onAddNote, onDeleteNote, activeNote, setActiveNote, retrieveNote, connectWeb3 }) {
     const sortedNotes = notes.sort((a, b) => b.lastModified - a.lastModified);
     const [cid, setCid] = useState('');
 
@@ -9,6 +9,8 @@ function Sidebar({ notes, onAddNote, onDeleteNote, activeNote, setActiveNote, re
             <h1>IPFS-NoteBook</h1>
             <button onClick={onAddNote}>Add</button>
             <button onClick={() => retrieveNote(cid)}>Retrieve</button>
+            <br></br>
+            <button onClick={connectWeb3}>CONNECT WITH METAMASK</button>
         </div>
         <div className="app-sidebar-notes">
         {sortedNotes.map((note) => (

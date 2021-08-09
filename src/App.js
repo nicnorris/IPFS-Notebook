@@ -4,6 +4,7 @@ import './App.css';
 import Sidebar from "./Sidebar";
 import Main from "./Main";
 import { Web3Storage } from 'web3.storage/dist/bundle.esm.min.js';
+const ethers = require('ethers');
 const API_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDRlZjc1NTlEOUE1NjcxOUVEMjQ2OEMxODJhMTViNTA0QTkxMkJCNjYiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2Mjg0MzEzNTU3NDgsIm5hbWUiOiJIYWNrZnMifQ.E4TMeK7nY7gxk4lfYQdIdxDsge6c-SFR5adMjWaAtdo';
 
 
@@ -58,8 +59,16 @@ function App() {
       lastModified: noteJson.lastModified,
     };
     setNotes([newNote, ...notes]);
-    
   }
+
+  const connectWeb3 = async () => {
+    if(window.ethereum){
+        await window.ethereum.enable()
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+    }
+  }
+
 
   return (
     <div className="App" >
@@ -71,6 +80,7 @@ function App() {
      activeNote ={activeNote}
      setActiveNote ={setActiveNote}
      retrieveNote = {retrieveNote}
+     connectWeb3 = {connectWeb3}
      />
     <Main activeNote={getActiveNote()} onUpdateNote={onUpdateNote} />
 
