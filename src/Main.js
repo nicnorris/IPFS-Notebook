@@ -4,7 +4,10 @@ import { useState } from 'react';
 import { Web3Storage } from 'web3.storage/dist/bundle.esm.min.js';
 const cryptojs = require('crypto-js');
 const ethers = require('ethers');
-const API_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDRlZjc1NTlEOUE1NjcxOUVEMjQ2OEMxODJhMTViNTA0QTkxMkJCNjYiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2Mjg0MzEzNTU3NDgsIm5hbWUiOiJIYWNrZnMifQ.E4TMeK7nY7gxk4lfYQdIdxDsge6c-SFR5adMjWaAtdo';
+require('dotenv').config();
+//const API_TOKEN = process.env.API_TOKEN;
+//const API_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDRlZjc1NTlEOUE1NjcxOUVEMjQ2OEMxODJhMTViNTA0QTkxMkJCNjYiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2Mjg0MzEzNTU3NDgsIm5hbWUiOiJIYWNrZnMifQ.E4TMeK7nY7gxk4lfYQdIdxDsge6c-SFR5adMjWaAtdo'
+
 
 function Main({ activeNote, onUpdateNote }){
 
@@ -52,7 +55,7 @@ function Main({ activeNote, onUpdateNote }){
     }
 
     const saveNote = async () => {
-        const storageClient = new Web3Storage({token: API_TOKEN});
+        const storageClient = new Web3Storage({token: process.env.REACT_APP_API_TOKEN});
         let blob = new Blob([JSON.stringify(activeNote)], { type: 'application/json' });
         let file = new File([blob], `${activeNote.title}.json`);
         const cid = await storageClient.put([file]);
@@ -78,16 +81,18 @@ function Main({ activeNote, onUpdateNote }){
             value={activeNote.body} 
             onChange= {(e) => onEditField("body", e.target.value)} 
             />
-            <button onClick={encrypt}>
-                ENCRYPT
-            </button>
-            <button onClick={decrypt}>
-                DECRYPT
-            </button>
-            <button onClick={saveNote}>
-                SAVE
-            </button>
-            <input type='text' id='key' placeholder="Enter encryption key here" onChange={(e) => setKey(e.target.value)}/>
+            <div class="action-buttons">
+                <button onClick={encrypt}>
+                    ENCRYPT
+                </button>
+                <button onClick={decrypt}>
+                    DECRYPT
+                </button>
+                <button onClick={saveNote}>
+                    SAVE
+                </button>
+            </div>
+            <input class="encryption-box" type='text' id='key' placeholder="Enter encryption key here..." onChange={(e) => setKey(e.target.value)}/>
             <h3 id='cid'>Save this CID: {cid}</h3>
         </div>
         {/*<div className="app-main-note-preview">

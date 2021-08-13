@@ -5,12 +5,15 @@ import Sidebar from "./Sidebar";
 import Main from "./Main";
 import { Web3Storage } from 'web3.storage/dist/bundle.esm.min.js';
 const ethers = require('ethers');
-const API_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDRlZjc1NTlEOUE1NjcxOUVEMjQ2OEMxODJhMTViNTA0QTkxMkJCNjYiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2Mjg0MzEzNTU3NDgsIm5hbWUiOiJIYWNrZnMifQ.E4TMeK7nY7gxk4lfYQdIdxDsge6c-SFR5adMjWaAtdo';
+require('dotenv').config();
+const API_TOKEN = process.env.REACT_APP_API_TOKEN;
 
 
 function App() {
   const [notes, setNotes ] = useState([]);
   const [activeNote, setActiveNote] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
+  const [userAddress, setUserAddress] = useState('');
 
   const onAddNote = () => {
     const newNote = {
@@ -43,29 +46,37 @@ function App() {
   }
 
   const retrieveNote = async (cid) => {
-    const storageClient = new Web3Storage({token: API_TOKEN});
-    const res = await storageClient.get(cid);
-    if(!res.ok){
-      throw new Error(`failed to get ${cid}`);
+    try{
+      const storageClient = new Web3Storage({token: API_TOKEN});
+      const res = await storageClient.get(cid);
+      if(!res.ok){
+        throw new Error(`failed to get ${cid}`);
+      }
+      const files = await res.files();
+      const myfile = files[0];
+      const note = await myfile.text();
+      const noteJson = JSON.parse(note);
+      const newNote = {
+        id: noteJson.id, //creates random id for new note... CHANGE this
+        title: noteJson.title,
+        body: noteJson.body,
+        lastModified: noteJson.lastModified,
+      };
+      setNotes([newNote, ...notes]);
     }
-    const files = await res.files();
-    const myfile = files[0];
-    const note = await myfile.text();
-    const noteJson = JSON.parse(note);
-    const newNote = {
-      id: noteJson.id, //creates random id for new note... CHANGE this
-      title: noteJson.title,
-      body: noteJson.body,
-      lastModified: noteJson.lastModified,
-    };
-    setNotes([newNote, ...notes]);
-  }
+    catch(e){
+      return;
+    }
+  }            
 
   const connectWeb3 = async () => {
     if(window.ethereum){
         await window.ethereum.enable()
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
+        const address = await signer.getAddress();
+        setUserAddress(address);
+        setIsConnected(true);
     }
   }
 

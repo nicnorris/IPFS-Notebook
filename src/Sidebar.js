@@ -7,10 +7,15 @@ function Sidebar({ notes, onAddNote, onDeleteNote, activeNote, setActiveNote, re
     return <div className="app-sidebar">
         <div className="app-sidebar-header">
             <h1>IPFS-NoteBook</h1>
-            <button onClick={onAddNote}>Add</button>
-            <button onClick={() => retrieveNote(cid)}>Retrieve</button>
-            <br></br>
-            <button onClick={connectWeb3}>CONNECT WITH METAMASK</button>
+            <div className="sidebar-buttons">
+                <button onClick={onAddNote}>Add</button>
+                <button onClick={() => retrieveNote(cid)}>Retrieve</button>
+                <br></br>
+                <button onClick={connectWeb3}>CONNECT WITH METAMASK</button>
+            </div>
+        </div>
+        <div className='cid'>
+                <input type='text' placeholder='Enter CID to Retrieve...' onChange={ (e) => setCid(e.target.value)}/>
         </div>
         <div className="app-sidebar-notes">
         {sortedNotes.map((note) => (
@@ -30,9 +35,6 @@ function Sidebar({ notes, onAddNote, onDeleteNote, activeNote, setActiveNote, re
                 </small>
             </div>
             ))}
-            <div className='cid'>
-                <input type='text' placeholder='Enter CID to Retrieve' onChange={ (e) => setCid(e.target.value)}/>
-            </div>
         </div>
     </div>
 };
