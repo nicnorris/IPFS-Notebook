@@ -5,14 +5,13 @@ import Sidebar from "./Sidebar";
 import Main from "./Main";
 import { Web3Storage } from 'web3.storage/dist/bundle.esm.min.js';
 const ethers = require('ethers');
+const server = "http://localhost:3042";
 require('dotenv').config();
-const API_TOKEN = process.env.REACT_APP_API_TOKEN;
-
 
 function App() {
   const [notes, setNotes ] = useState([]);
   const [activeNote, setActiveNote] = useState(false);
-  const [isConnected, setIsConnected] = useState(false);
+  const [isWeb3Connected, setIsWeb3Connected] = useState(false);
   const [userAddress, setUserAddress] = useState('');
 
   const onAddNote = () => {
@@ -47,7 +46,7 @@ function App() {
 
   const retrieveNote = async (cid) => {
     try{
-      const storageClient = new Web3Storage({token: API_TOKEN});
+      const storageClient = new Web3Storage({token: process.env.REACT_APP_API_TOKEN});
       const res = await storageClient.get(cid);
       if(!res.ok){
         throw new Error(`failed to get ${cid}`);
@@ -70,16 +69,59 @@ function App() {
   }            
 
   const connectWeb3 = async () => {
+    if(isWeb3Connected){
+      return;
+    }
     if(window.ethereum){
         await window.ethereum.enable()
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
         const address = await signer.getAddress();
         setUserAddress(address);
-        setIsConnected(true);
+        setIsWeb3Connected(true);
+        if(address){  
+          await getNotesDb(address);
+        }
     }
   }
 
+  const saveNoteDb = async(cid) => {
+    if(!isWeb3Connected){
+      return;
+    }
+    const request = new Request(`${server}/send/${userAddress}/${cid}`, { method: 'POST' });
+    try{
+      await fetch(request);
+    }
+    catch(err){
+      console.log(err);
+    }
+  }
+  
+  const getNotesDb = async(address) => {
+    try{
+      const myreq = `${server}/cids/${address}`;
+      const response = await fetch(myreq);
+      const responseArr = await response.json();
+      let noteCids = '';
+      for(let i=0; i<responseArr.length; i++){
+        const cid = responseArr[i].cid;
+        console.log(cid);
+        noteCids += cid + '\n';
+      }
+      const newNote = {
+        id: uuid(),
+        title: "Your CIDs",
+        body: noteCids,
+        lastModified: Date.now(),
+      };
+      setNotes([newNote, ...notes]);
+
+    } 
+    catch(err){
+      console.log(err);
+    }
+  }
 
   return (
     <div className="App" >
@@ -93,7 +135,7 @@ function App() {
      retrieveNote = {retrieveNote}
      connectWeb3 = {connectWeb3}
      />
-    <Main activeNote={getActiveNote()} onUpdateNote={onUpdateNote} />
+    <Main activeNote={getActiveNote()} onUpdateNote={onUpdateNote} saveNoteDb={saveNoteDb}/>
 
     </div>
   );
