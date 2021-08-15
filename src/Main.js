@@ -3,9 +3,6 @@
 import { useState } from 'react';
 import { Web3Storage } from 'web3.storage/dist/bundle.esm.min.js';
 const cryptojs = require('crypto-js');
-const ethers = require('ethers');
-const { Client } = require('pg');
-require('dotenv').config();
 
 function Main({ activeNote, onUpdateNote, saveNoteDb }){
     const [key, setKey] = useState('');
@@ -52,7 +49,7 @@ function Main({ activeNote, onUpdateNote, saveNoteDb }){
     }
 
     const saveNote = async () => {
-        const storageClient = new Web3Storage({token: process.env.REACT_APP_API_TOKEN});
+        const storageClient = new Web3Storage({token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDRlZjc1NTlEOUE1NjcxOUVEMjQ2OEMxODJhMTViNTA0QTkxMkJCNjYiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2Mjg0MzEzNTU3NDgsIm5hbWUiOiJIYWNrZnMifQ.E4TMeK7nY7gxk4lfYQdIdxDsge6c-SFR5adMjWaAtdo'});
         let blob = new Blob([JSON.stringify(activeNote)], { type: 'application/json' });
         let file = new File([blob], `${activeNote.title}.json`);
         const cid = await storageClient.put([file]);
